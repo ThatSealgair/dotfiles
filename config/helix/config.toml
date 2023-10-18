@@ -1,0 +1,21 @@
+theme = "kanagawa"
+
+[editor]
+true-color = true
+shell = ["zsh", "-c"]
+text-width = 120
+scrolloff = 3
+
+[editor.soft-wrap]
+enable = true
+max-wrap = 15
+max-indent-retain = 20
+wrap-indicator = ""
+
+[editor.lsp]
+display-inlay-hints = true
+
+[editor.indent-guides]
+render = true
+character = "╎" 
+skip-levels = 1
