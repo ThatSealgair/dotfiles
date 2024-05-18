@@ -1,0 +1,86 @@
+default_layout "compact"
+on_force_close "quit"
+pane_frames false
+simplified_ui true
+default_shell "nu"
+//scrollback_editor "hx -u scrollback.lua"
+
+theme "kanagawa"
+
+keybinds clear-defaults=true {
+    normal {
+        bind "Ctrl b" { SwitchToMode "tmux"; }
+    }
+
+    renametab {
+        bind "Ctrl c" { SwitchToMode "normal"; }
+        bind "Enter" { SwitchToMode "normal"; }
+        bind "Esc" { UndoRenameTab; SwitchToMode "tmux"; }
+    }
+
+    scroll {
+        bind "/" { EditScrollback; SwitchToMode "Normal"; }
+        bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
+        bind "Ctrl c" { ScrollToBottom; SwitchToMode "normal"; }
+        bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
+        bind "d" { HalfPageScrollDown; }
+        bind "e" { EditScrollback; SwitchToMode "normal"; }
+        bind "j" { ScrollDown; }
+        bind "k" { ScrollUp; }
+        bind "q" { SwitchToMode "normal"; }
+        bind "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
+        bind "u" { HalfPageScrollUp; }
+    }
+
+    tmux {
+        bind "%" { NewPane "Right"; SwitchToMode "normal"; }
+        bind "," { SwitchToMode "RenameTab"; TabNameInput 0; }
+        bind "-" { NewPane "Down"; SwitchToMode "normal"; }
+        bind "/" { EditScrollback; SwitchToMode "Normal"; }
+        bind "Ctrl b" { SwitchToMode "normal"; }
+        bind "Enter" { SwitchToMode "normal"; }
+        bind "Space" { NextSwapLayout; }
+        bind "[" { SwitchToMode "scroll"; }
+        bind "\"" { NewPane "Down"; SwitchToMode "normal"; }
+        bind "c" { NewTab; SwitchToMode "normal"; }
+        bind "h" { MoveFocus "Left"; }
+        bind "j" { MoveFocus "Down"; }
+        bind "k" { MoveFocus "Up"; }
+        bind "l" { MoveFocus "Right"; }
+        bind "n" { GoToNextTab; }
+        bind "o" { FocusNextPane; }
+        bind "p" { GoToPreviousTab; }
+        bind "q" { Detach; }
+        bind "x" { CloseFocus; SwitchToMode "normal"; }
+        bind "z" { ToggleFocusFullscreen; SwitchToMode "normal"; }
+        bind "|" { NewPane "Right"; SwitchToMode "normal"; }
+    }
+
+    shared_except "normal" {
+        bind "Esc" { SwitchToMode "normal"; }
+    }
+}
+
+plugins {
+    // tab-bar { path "tab-bar"; }
+    // status-bar { path "status-bar"; }
+    // strider { path "strider"; }
+    // compact-bar { path "compact-bar"; }
+}
+
+themes {
+    kanagawa {
+        fg "#C8C093"
+        bg "#181616"
+        red "#C4746E"
+        green "#8A9A7B"
+        yellow "#C4B28A"
+        blue "#8BA4B0"
+        magenta "#E46876"
+        orange "#FFA066"
+        cyan "#8EA4A2"
+        black "#0D0C0C"
+        white "#C8C093"
+    }
+}
+
