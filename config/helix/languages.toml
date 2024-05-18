@@ -1,0 +1,26 @@
+[[language]]
+name = "c"
+language-servers = [ "clangd" ]
+
+[[language]]
+name = "go"
+auto-format = true
+formatter = { command = "goimports" }
+
+[[language]]
+name = "python"
+language-servers = [ "pylsp" ]
+scope = "source.python"
+formatter = { command = "black", args = ["--quiet", "-"] }
+auto-format = true
+
+[language-server.pylsp.config.pylsp]
+plugins.ruff.enabled = true
+plugins.black.enabled = true
+
+
+[[language]]
+name = "rust"
+
+[[language-server.rust-analyzer.config.check]]
+command = "clippy"
