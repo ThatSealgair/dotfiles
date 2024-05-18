@@ -1,0 +1,11 @@
+[helpers]
+
+[default]
+depends = []
+
+[default.files]
+LICENSE = ""
+"README.md" = ""
+config = ""
+
+[default.variables]
