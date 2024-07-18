@@ -895,6 +895,5 @@ $env.config = {
 }
 
 use ~/.cache/starship/init.nu
-source ~/.zoxide.nu
 alias cat = batcat
 alias notes = flatpak run md.obsidian.Obsidian
