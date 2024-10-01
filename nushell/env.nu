@@ -81,6 +81,8 @@ $env.GO_HOME = $"/usr/local/go/bin/"
 $env.GO_PATH = $"($env.HOME)/go/bin/"
 $env.PNPM_HOME = $"($env.HOME)/.local/share/pnpm"
 $env.BUN_HOME = $"($env.HOME)/.bun/bin"
+$env.LUA_LSP = $"($env.HOME)/lua-language-server/bin/"
+$env.ZIG_HOME = $"/usr/local/zig/"
 
 
 $env.PATH = ($env.PATH | split row (char esep) 
@@ -89,6 +91,8 @@ $env.PATH = ($env.PATH | split row (char esep)
     | prepend $env.GO_HOME
     | prepend $env.GO_PATH
     | prepend $env.PNPM_HOME
+    | prepend $env.LUA_LSP
+    | prepend $env.ZIG_HOME
     | uniq) # Filter so the paths are unique
 
 mkdir ~/.cache/starship

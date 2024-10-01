@@ -2,21 +2,52 @@
 name = "c"
 language-servers = [ "clangd" ]
 
+
 [[language]]
 name = "go"
 auto-format = true
 formatter = { command = "goimports" }
 
+
+[[language]]
+name = "lua"
+formatter = { command = "stylua", args = ["--stdin"] }
+language-servers = [ "lua-language-server" ]
+
+[language.debugger]
+name = "luadebug"
+transport = "stdio"
+command = "lua -e 'require(\"luadebug\").start()'"
+
+[[language.debugger.templates]]
+name = "lua-script"
+request = "launch"
+completion = [ { name = "script", completion = "filename" } ]
+args = { program = "{0}" }
+
+
 [[language]]
 name = "python"
-language-servers = [ "pylsp" ]
+language-servers = [ "pylyzer" ]
 scope = "source.python"
-formatter = { command = "black", args = ["--quiet", "-"] }
+formatter = { command = "ruff", args = ["--quiet", "-"] }
 auto-format = true
 
 [language-server.pylsp.config.pylsp]
 plugins.ruff.enabled = true
 plugins.black.enabled = true
+
+[language.debugger]
+name = "debugpy"
+transport = "stdio"
+command = "python3"
+args = ["-m",  "debugpy.adapter"]
+
+[[language.debugger.templates]]
+name = "source"
+request = "launch"
+completion = [ { name = "entrypoint", completion = "filename", default = "." } ]
+args = { mode = "debug", program = "{0}" }
 
 
 [[language]]
@@ -24,3 +55,30 @@ name = "rust"
 
 [[language-server.rust-analyzer.config.check]]
 command = "clippy"
+
+[language.debugger]
+name = "lldb-vscode"
+transport = "stdio"
+command = "lldb-vscode"
+
+[[language.debugger.templates]]
+name = "binary"
+request = "launch"
+completion = [ { name = "binary", completion = "filename" } ]
+args = { program = "{0}", initCommands = [ "command script import /usr/local/etc/lldb_vscode_rustc_primer.py" ] }
+
+
+[[language]]
+name = "zig"
+language-servers = [ "zls" ]
+
+[language.debugger]
+name = "lldb-vscode"
+transport = "stdio"
+command = "lldb-vscode"
+
+[[language.debugger.templates]]
+name = "binary"
+request = "launch"
+completion = [ { name = "binary", completion = "filename" } ]
+args = { program = "{workspaceRoot}/zig-out/bin/{fileBasenameNoExtension}" }

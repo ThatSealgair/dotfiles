@@ -229,7 +229,6 @@ $env.config = {
     }
 
     color_config: $dark_theme # if you want a more interesting theme, you can replace the empty record with `$dark_theme`, `$light_theme` or another custom record
-    use_grid_icons: true
     footer_mode: "25" # always, never, number_of_rows, auto
     float_precision: 2 # the precision for displaying floats in tables
     buffer_editor: "" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
@@ -895,5 +894,14 @@ $env.config = {
 }
 
 use ~/.cache/starship/init.nu
-alias cat = batcat
+alias cat = bat
+alias du = dust
+alias find = fd
+alias grep = rg
+alias ping = gping
+alias strings = stringsext
+alias sudo = sudo-rs
+alias unzip = ripunzip -v unzip-file 
 alias notes = flatpak run md.obsidian.Obsidian
+alias docs = cd /mnt/c/Users/Hunte/Documents/
+alias github = cd /mnt/c/Users/Hunte/Documents/GitHub
