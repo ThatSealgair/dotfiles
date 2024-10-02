@@ -6,7 +6,13 @@ import logging
 from typing import List, Callable
 from pathlib import Path
 
-logging.basicConfig(filename='setup_log.txt', level=logging.INFO, 
+USER_EMAIL = "user.name@example.com"
+USER_NAME = "user"
+NODE_JS_VERSION = "22.x"
+GO_TAR = "go1.23.2.linux-amd64.tar.gz"
+ZIG_TAR = "zig-linux-x86_64-0.14.0-dev.1694+3b465ebec.tar.xz"
+
+logging.basicConfig(filename='setup_log.txt', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 def run_command(command: str, use_sudo: bool = False) -> None:
@@ -23,28 +29,23 @@ def run_command(command: str, use_sudo: bool = False) -> None:
         logging.error(f"Command failed: {command}\nError: {e.stderr}")
         sys.exit(1)
 
-def update_system() -> None:
-    print("Updating system...")
-    run_command("apt update && apt upgrade -y", use_sudo=True)
+def install_zig() -> None:
+    print("Install Zig")
+    zig_url = f"https://ziglang.org/builds/{ZIG_TAR}"
+    zig_folder = f"{ZIG_TAR}" # Remove .tar.xz
 
-def install_zig(version: str = "0.14.0") -> None:
-    print(f"Installing Zig {version}...")
-    zig_url = f"https://ziglang.org/download/{version}/zig-linux-x86_64-{version}.tar.xz"
-    zig_tar = f"zig-linux-x86_64-{version}.tar.xz"
-    zig_folder = f"zig-linux-x86_64-{version}"
-    
     run_command(f"wget {zig_url} -P /tmp")
-    run_command(f"tar -xf /tmp/{zig_tar} -C /tmp")
-    
+    run_command(f"tar -xf /tmp/{ZIG_TAR} -C /tmp")
+
     if Path("/opt/zig").exists():
         shutil.rmtree("/opt/zig")
     shutil.move(f"/tmp/{zig_folder}", "/opt/zig")
-    
+
     run_command("ln -sf /opt/zig/zig /usr/local/bin/zig", use_sudo=True)
     run_command("zig version")
 
 def install_zls() -> None:
-    print("Installing ZLS (Zig Language Server)...")
+    print("Installing ZLS")
     run_command("apt install -y git cmake build-essential", use_sudo=True)
     run_command("git clone https://github.com/zigtools/zls /tmp/zls")
     run_command("zig build -Drelease-safe", cwd="/tmp/zls")
@@ -52,99 +53,97 @@ def install_zls() -> None:
     if Path("/opt/zls").exists():
         os.remove("/opt/zls")
     shutil.move("/tmp/zls/zig-out/bin/zls", "/opt/zls")
-    
+
     run_command("ln -sf /opt/zls /usr/local/bin/zls", use_sudo=True)
     run_command("zls --version")
 
-def install_rust_and_cli_tools() -> None:
-    print("Installing Rust and Rust-based CLI tools...")
+def install_rust() -> None:
+    print("Installing Rust")
     run_command("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y")
-    run_command("source $HOME/.cargo/env")
-    run_command("add-apt-repository ppa:maveonair/helix-editor", use_sudo=True)
-    update_system()
-    run_command("apt install helix -y", use_sudo=True)
+
+def install_rust_cli_tools() -> None:
+    print("Installing Rust CLI Tools")
 
     rust_tools: List[str] = [
         "cargo-audit", "cargo-edit", "cargo-outdated", "cargo-watch",
         "checkexec", "coreutils", "du-dust", "fd", "git-delta" "hyperfine", "just",
-        "nu", "ripgrep", "starship", "systemfd", "watchexec",
+        "nu", "ripgrep", "starship", "stylua", "systemfd", "watchexec",
         "--locked zellij"
     ]
-    
+
     for tool in rust_tools:
         run_command(f"cargo install {tool}")
 
-def install_lua_and_luarocks() -> None:
-    print("Installing Lua and LuaRocks...")
-    run_command("apt install -y lua5.4 lua5.4-dev luarocks", use_sudo=True)
+def install_go() -> None:
+    print("Installing Go")
+    # Haveuser enter download version
+    go_url = f"https://go.dev/dl/{GO_TAR}"
+    run_command(f"wget {go_url} -P /tmp")
+    run_command(f"tar -C /usr/local/bin -xzf {GO_TAR}", use_sudo=True)
+    run_command("go --version")
 
-def install_go_and_cli_tools() -> None:
-    print("Installing Go and Go-based CLI tools...")
-    run_command("apt install -y golang", use_sudo=True)
-
+def install_go_cli_tools() -> None:
     go_tools: List[str] = [
-        "golangci-lint", "gopls", "staticcheck", "hey", "cobra-cli"
+        "golangci/golangci-lint/cmd/golangci-lint",
+        "golang.org/x/tools/gopls",
+        "honnef.co/go/tools/cmd/staticcheck",
+        "rakyll/hey",
+        "spf13/cobra-cli",
+        "pkg/errors",
+        "vektra/mockery/v2",
+        "golang.org/x/tools/cmd/goimports",
+        "kisslinux/govisualizer",
+        "oligot/go-mod-upgrade"
     ]
-    
+
     for tool in go_tools:
         run_command(f"go install github.com/{tool}@latest")
 
-def install_bun_and_expressjs() -> None:
-    print("Installing Bun (TypeScript runtime) and ExpressJS...")
+def install_frontend_languages() -> None:
+    print("Installing Node.js, PNPM, Deno, and Bun")
+
+    print(f"Installing NodeJS Version {NODE_JS_VERSION}")
+    run_command(f"curl -fsSL https://deb.nodesource.com/setup_{NODE_JS_VERSION} -o nodesource_setup.sh")
+    run_command("-E bash nodesource_setup.sh", use_sudo=True)
+
+    print("Installing Bun")
     run_command("curl -fsSL https://bun.sh/install | bash")
-    run_command("source $HOME/.bashrc")
-    run_command("bun add express --global")
 
-def install_nushell() -> None:
-    print("Installing Nushell...")
-    run_command("apt install -y nushell", use_sudo=True)
-    run_command("chsh -s /usr/bin/nushell $USER", use_sudo=True)
+    print("Installing Deno")
+    run_command("curl -fsSL https://deno.land/install.sh | sh")
 
-def install_dev_tools() -> None:
-    print("Installing essential development tools...")
-    tools: List[str] = [
-        "build-essential", "cmake", "git", "curl", "pkg-config",
-        "libsystemd-dev", "libelf-dev", "libseccomp-dev", "libclang-dev",
-        "libssl-dev", "libseccomp2", "htop", "jq", "fzf", "docker",
-        "docker-compose", "git-lfs", "python3-pip", "clangd", "llvm",
-        "python3-venv", "python3-dev", "mypy", "black", "pylint", "flake8",
-        "python3-pytest", "python3-coverage"
-    ]
-    run_command(f"apt install -y {' '.join(tools)}", use_sudo=True)
-
-def install_node() -> None:
-    print("Installing Node.js and npm...")
-    run_command("curl -fsSL https://deb.nodesource.com/setup_16.x | bash -", use_sudo=True)
-    run_command("apt install -y nodejs", use_sudo=True)
+    print("Installing PNPM")
+    run_command("wget -qO- https://get.pnpm.io/install.sh | ENV=\"$HOME/.bashrc\" SHELL=\"$(which bash)\" bash -")
 
 def install_python_tools() -> None:
     print("Installing Python development tools...")
+
+    run_command("curl -sSf https://rye.astral.sh/get | bash")
+
     python_tools: List[str] = [
-        "poetry", "pipenv", "virtualenv", "ipython", "jupyter",
-        "black", "isort", "mypy", "pylint", "flake8", "pytest",
-        "coverage", "tox", "pre-commit", "pyright"
+        "black", "isort", "mypy", "pylint", "ruff", "pytest",
+        "tox", "pre-commit", "pyright", "pylyzer", "python-lsp-server",
+        "debugpy"
     ]
-    run_command(f"python3 -m pip install --user {' '.join(python_tools)}")
+    for tool in python_tools:
+        run_command(f"pipx install {tool}")
 
 def setup_git() -> None:
     print("Setting up Git...")
-    run_command('git config --global user.email "your.email@example.com"')
-    run_command('git config --global user.name "Your Name"')
+    run_command(f"git config --global user.email \"{USER_EMAIL}\"")
+    run_command(F"git config --global user.name \"{USER_NAME}\"")
 
 def setup_development_environment() -> None:
     functions: List[Callable[[], None]] = [
-        update_system,
-        install_dev_tools,
         install_zig,
-        install_zls,
-        install_rust_and_cli_tools,
-        install_lua_and_luarocks,
-        install_go_and_cli_tools,
-        install_bun_and_expressjs,
-        install_node,
+        install_rust,
+        install_rust_cli_tools,
+        install_go,
+        install_go_cli_tools,
+        install_frontend_languages,
         install_python_tools,
-        install_nushell,
-        setup_git
+        setup_git,
+        install_zls,
     ]
 
     for func in functions:
