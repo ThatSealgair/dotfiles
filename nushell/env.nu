@@ -80,7 +80,7 @@ $env.NU_PLUGIN_DIRS = [
 # /usr/local/bin/go/bin/
 
 $env.BUN_HOME = $"($env.HOME)/.bun/bin"
-$env.CARGO_HOME = $"($env.HOME)/.cargo/bin"
+$env.CARGO_HOME = $"($env.HOME)/.cargo"
 $env.GO_HOME = $"/usr/local/bin/go/bin"
 $env.GO_PATH = $"($env.HOME)/go/bin/"
 $env.LUA_LSP = $"($env.HOME)/lua-language-server/bin/"
