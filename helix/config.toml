@@ -2,9 +2,19 @@ theme = "kanagawa"
 
 [editor]
 true-color = true
-shell = ["zsh", "-c"]
+shell = ["nu", "-c"]
 text-width = 120
 scrolloff = 3
+line-number = "absolute"
+cursorline = true
+rulers = [80, 120]
+mouse = true
+completion-trigger-len = 2
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
 
 [editor.soft-wrap]
 enable = true
@@ -14,8 +24,15 @@ wrap-indicator = ""
 
 [editor.lsp]
 display-inlay-hints = true
+display-messages = true
 
 [editor.indent-guides]
 render = true
 character = "╎" 
 skip-levels = 1
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name", "file-modification-indicator"]
+center = ["diagnostics"]
+right = ["selections", "position", "file-encoding", "file-line-ending", "file-type"]
+separator = "│"
