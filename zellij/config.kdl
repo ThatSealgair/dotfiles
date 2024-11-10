@@ -23,6 +23,20 @@ terminal_features {
     csi_u_key_encoding true
 }
 
+// === Plugins ===
+plugins {
+    tab-bar { path "tab-bar"; }
+    status-bar { path "status-bar"; }
+    strider { path "strider"; } // Fuzzy finder
+    compact-bar { path "compact-bar"; }
+    session-manager {
+        path "session-manager"
+        store_path "~/.zellij_sessions"
+    }
+}
+
+
+// === Keybindings ===
 keybinds clear-defaults=true {
     normal {
         bind "Ctrl b" { SwitchToMode "tmux"; }
@@ -117,13 +131,6 @@ keybinds clear-defaults=true {
     shared_except "normal" {
         bind "Esc" { SwitchToMode "normal"; }
     }
-}
-
-plugins {
-    // tab-bar { path "tab-bar"; }
-    // status-bar { path "status-bar"; }
-    // strider { path "strider"; }
-    // compact-bar { path "compact-bar"; }
 }
 
 themes {
