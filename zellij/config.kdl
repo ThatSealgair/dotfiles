@@ -1,11 +1,27 @@
+// === Shell ===
+default_shell "nu" // "zsh", "bash"
+
+// === Appearance & UI ===
 default_layout "compact"
-on_force_close "quit"
+theme "kanagawa"
 pane_frames false
 simplified_ui true
-default_shell "nu"
-//scrollback_editor "hx -u scrollback.lua"
 
-theme "kanagawa"
+// === Session Behaviour ===
+on_force_close "quit" // "detach"
+mouse_mode true
+copy_on_select true
+scroll_buffer_size 100_000
+scroll_field_cells 100
+mirror_session false // Allows sharing sessions between users
+
+// === Terminal Features ===
+terminal_features {
+    graphics true
+    sixel true
+    mouse_reporting true
+    csi_u_key_encoding true
+}
 
 keybinds clear-defaults=true {
     normal {
