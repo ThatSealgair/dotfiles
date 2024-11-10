@@ -33,27 +33,69 @@ keybinds clear-defaults=true {
     }
 
     tmux {
-        bind "%" { NewPane "Right"; SwitchToMode "normal"; }
-        bind "," { SwitchToMode "RenameTab"; TabNameInput 0; }
-        bind "-" { NewPane "Down"; SwitchToMode "normal"; }
-        bind "/" { EditScrollback; SwitchToMode "Normal"; }
-        bind "Ctrl b" { SwitchToMode "normal"; }
-        bind "Enter" { SwitchToMode "normal"; }
-        bind "Space" { NextSwapLayout; }
-        bind "[" { SwitchToMode "scroll"; }
-        bind "\"" { NewPane "Down"; SwitchToMode "normal"; }
+        // Session management
+        bind "(" { PreviousSwapLayout; }
+        bind ")" { NextSwapLayout; }
+        bind "d" { Detach; }
+        bind "s" { SwitchToMode "session"; }
+        
+        // Window/Tab management
         bind "c" { NewTab; SwitchToMode "normal"; }
+        bind "," { SwitchToMode "RenameTab"; TabNameInput 0; }
+        bind "w" { ToggleFloatingPanes; }
+        bind "n" { GoToNextTab; }
+        bind "p" { GoToPreviousTab; }
+        bind "0" { GoToTab 1; }
+        bind "1" { GoToTab 1; }
+        bind "2" { GoToTab 2; }
+        bind "3" { GoToTab 3; }
+        bind "4" { GoToTab 4; }
+        bind "5" { GoToTab 5; }
+        bind "6" { GoToTab 6; }
+        bind "7" { GoToTab 7; }
+        bind "8" { GoToTab 8; }
+        bind "9" { GoToTab 9; }
+        
+        // Pane management
+        bind "%" { NewPane "Right"; SwitchToMode "normal"; }
+        bind "\"" { NewPane "Down"; SwitchToMode "normal"; }
+        bind "-" { NewPane "Down"; SwitchToMode "normal"; }
+        bind "|" { NewPane "Right"; SwitchToMode "normal"; }
+        bind "z" { ToggleFocusFullscreen; SwitchToMode "normal"; }
+        bind "o" { FocusNextPane; }
+        bind ";" { FocusPreviousPane; }
+        bind "x" { CloseFocus; SwitchToMode "normal"; }
+        
+        // Movement
         bind "h" { MoveFocus "Left"; }
         bind "j" { MoveFocus "Down"; }
         bind "k" { MoveFocus "Up"; }
         bind "l" { MoveFocus "Right"; }
-        bind "n" { GoToNextTab; }
-        bind "o" { FocusNextPane; }
-        bind "p" { GoToPreviousTab; }
-        bind "q" { Detach; }
-        bind "x" { CloseFocus; SwitchToMode "normal"; }
-        bind "z" { ToggleFocusFullscreen; SwitchToMode "normal"; }
-        bind "|" { NewPane "Right"; SwitchToMode "normal"; }
+        bind "Left" { MoveFocus "Left"; }
+        bind "Down" { MoveFocus "Down"; }
+        bind "Up" { MoveFocus "Up"; }
+        bind "Right" { MoveFocus "Right"; }
+        
+        // Resize
+        bind "H" { Resize "Left"; }
+        bind "J" { Resize "Down"; }
+        bind "K" { Resize "Up"; }
+        bind "L" { Resize "Right"; }
+        
+        // Layout
+        bind "Space" { NextSwapLayout; }
+        
+        // Copy mode and scrollback
+        bind "[" { SwitchToMode "scroll"; }
+        bind "/" { EditScrollback; SwitchToMode "Normal"; }
+        
+        // Mode switching
+        bind "Ctrl b" { SwitchToMode "normal"; }
+        bind "Enter" { SwitchToMode "normal"; }
+        
+        // Additional tmux compatibility
+        bind "t" { SwitchToMode "RenameTab"; TabNameInput 0; }
+        bind "!" { TogglePaneFrames; }
     }
 
     shared_except "normal" {
@@ -83,4 +125,3 @@ themes {
         white "#C8C093"
     }
 }
-
