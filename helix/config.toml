@@ -20,7 +20,7 @@ select = "underline"
 enable = true
 max-wrap = 15
 max-indent-retain = 20
-wrap-indicator = ""
+wrap-indicator = "…"
 
 [editor.lsp]
 display-inlay-hints = true
