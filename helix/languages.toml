@@ -33,9 +33,9 @@ scope = "source.python"
 formatter = { command = "ruff", args = ["--quiet", "-"] }
 auto-format = true
 
-[language-server.pylsp.config.pylsp]
-plugins.ruff.enabled = true
-plugins.black.enabled = true
+[language-server.pylyzer]
+command = "pylyzer"
+config = { settings = { args = [ "--server" ] } }
 
 [language.debugger]
 name = "debugpy"
