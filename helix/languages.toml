@@ -32,6 +32,7 @@ language-servers = [ "pylyzer" ]
 scope = "source.python"
 formatter = { command = "ruff", args = ["--quiet", "-"] }
 auto-format = true
+roots = [ "pyproject.toml", "setup.py", "requirements.txt", "Poetry.lock"]
 
 [language-server.pylyzer]
 command = "pylyzer"
@@ -52,9 +53,16 @@ args = { mode = "debug", program = "{0}" }
 
 [[language]]
 name = "rust"
+scope = "source.rust"
+roots = ["Cargo.toml", "Cargo.lock"]
 
-[[language-server.rust-analyzer.config.check]]
-command = "clippy"
+[[language-server.rust-analyzer.config]]
+check = { command = "clippy", features = "all" }
+diagnostics = { experimental = { enable = false } }
+hover = { actions = { enable = true } }
+typing = { autoClosingAngleBrackets = { enable = true } }
+cargo = { allFeatures = true }
+procMacro = { enable = true }
 
 [language.debugger]
 name = "lldb-vscode"
