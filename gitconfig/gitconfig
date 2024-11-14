@@ -5,11 +5,18 @@
 	diffFilter = delta --color-only
 
 [delta]
+	features = diff-output
 	navigate = true # Use n and N to move between diff sections
 	dark = true # Required for use with Zellij
+	hyperlinks = true
+	true-color = always
+
+[delta "diff-output"]
+	line-numbers = true
+	side-by-side = true
 
 [merge]
-	conflictstyle = diff3
+	conflictstyle = zdiff3
 
 [diff]
 	colorMoved = default
