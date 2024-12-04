@@ -2,28 +2,29 @@
 # fg_name = "fg:#C8C093"
 # fg_detail "fg:#8BA4B0"
 # fg_warn = "fg:#C4746E"
-# bg_user = "bg:16161D"
-# bg_lang = "bg:363646"
-# bg_git_a = "bg:#2A2A37"
-# bg_git_b = "bg:FCA17D"
-# bg_git_c = "bg:E4876"
+
+# bg_l1 = "bg:16161D"
+# bg_l2 = "bg:1F1F28"
+# bg_l3 = "bg:2A2A37"
+# bg_l4 = "bg:363646"
+# bg_l5 = "bg:54546D"
 
 format = """
-[](#16161D)\
+[](bg:#16161D fg:#16161D)\
 $username\
 $hostname\
 [](bg:#1F1F28 fg:#16161D)\
 $memory_usage\
 $directory\
-[](fg:#1F1F28 bg:#2A2A37)\
+[](bg:#2A2A37 fg:#1F1F28)\
 $git_branch\
 $git_status\
 $git_commit\
-[](fg:#2A2A37 bg:#363646)\
-#c\
+[](bg:#363646 fg:#2A2A37)\
+$c\
 $python\
 $rust\
-[](fg:#363646 bg:#54546D)\
+[](bg:#54546D fg:#363646)\
 $time\
 [ ](fg:#54546D)\
 """
@@ -34,86 +35,97 @@ show_always = true
 style_user = "fg:#C8C093"
 # fg_warn
 style_root = "fg:#C47463"
-# bg_user
-format = "[$user](bg:#15151D $style)"
+# bg_l1
+format = "[$user](bg:#16161D $style)"
 
 [hostname]
 ssh_only = true
 ssh_symbol = "🌐"
-# bg_user fg_detail
-style = "bg:#15151D fg:#8BA4B0"
+# bg_l1 fg_detail
+style = "bg:#16161D fg:#8BA4B0"
 format = "[ $ssh_symbol $hostname]($style)"
 
 [memory_usage]
 threshold = 75
 # fg_warn
+# bg_l2 = "bg:1F1F28"
 style = "bg:#1F1F28 fg:#C47463"
 format = "[($ram/$ram_pct)]($style)"
 
 [directory]
-style = "bg:#1F1F28"
-repo_root_style = 'fg:#C8C093'
+# bg_l2 fg_default
+style = "bg:#1F1F28 fg:#C5C9C5"
+# fg_name
+repo_root_style = "bg:1F1F28 fg:#C8C093"
 read_only = "🔒"
-read_only_style = 'fg:#C4746E'
+# fg_warn
+read_only_style = 'bg:#F1F28 fg:#C4746E'
 truncate_to_repo = true
 truncation_length = 2
 truncation_symbol = "…/"
-format = "[ $path]($style)[$read_only ]($read_only_style)"
+format = "[ $path]($style)[$read_only]($read_only_style)"
 
 [git_branch]
 symbol = ""
-style = "bg:#2A2A37"
+# bg_l3
+style = "bg:#2A2A37 fg:#C5C9C5"
 format = "[ $symbol $branch($remote_branch)]($style)"
-truncation_length = 4
+truncation_length = 12
 truncation_symbol = "…"
 
 [git_status]
-style = "bg:#FCA17D"
-ahead = '⇡${count}'
-diverged = '⇕⇡${ahead_count}⇣${behind_count}'
-behind = '⇣${count}'
-format = "[ ($all_status$ahead_behind)]($style)"
+# bg_l3
+style = "bg:#2A2A37 fg:#C5C9C5"
+ahead = '⇡$count'
+diverged = '⇕⇡$ahead_count⇣$behind_count'
+behind = '⇣$count'
+format = "[($all_status$ahead_behind)]($style)"
 
 [git_commit]
-style = "bg:#FCA17D"
+# bg_l3
+style = "bg:#2A2A37 fg:#C5C9C5"
 tag_symbol = "🏷️"
-format = "[ $tag_symbol($hash|$tag) ]($style)"
+# fg_name fg_detail
+format = "[$symbol]($style)[$hash]($style fg:#C8C093)[ tag=]($style)[$tag]($style fg:#8BA4B0)"
 
 [c]
 symbol = "" 
-# bg_lang fg_default
+# bg_l4 fg_default
 style = "bg:#363646 fg:#C5C9C5"
 version_format = "v${minor}"
-format = " [ $symbol (]($style)[$version]($style fg:#C8C093)[|]($style)[$name]($style fg:#8BA4B0)[)]($style)"
+# fg_name fg_detail
+format = "[ $symbol ]($style)[$version]($style fg:#C8C093)[ | ]($style)[$name]($style fg:#8BA4B0)"
 
 [golang]
 symbol = ""
 # bg_lang fg_default
+# bg_l4 = "bg:363646"
 style = "bg:#363646 fg:#C5C9C5"
 # fg_warn
 not_capable_style = "fg:#C4746E"
 version_format = "v${minor}"
 # fg_name fg_detail
-format = " [ $symbol (]($style)[$version]($style fg:#C8C093)[|]($style)[$mod_version]($style fg:#8BA4B0)[)]($style)"
+format = "[ $symbol ]($style)[$version]($style fg:#C8C093)[ | ]($style)[$mod_version]($style fg:#8BA4B0)"
 
 [rust]
 symbol = "🦀"
-# bg_lang fg_default
+# bg_l4 fg_default
 style = "bg:#363646 fg:#C5C9C5"
 version_format = "v${minor}"
 # fg_name fg_detail
-format = " [ $symbol (]($style)[$version]($style fg:#C8C093)[|]($style)[$toolchain]($style fg:#8BA4B0)[)]($style)"
+format = "[ $symbol ]($style)[$version]($style fg:#C8C093)[ | ]($style)[$toolchain]($style fg:#8BA4B0)"
 
 [python]
 symbol = "🐍"
-# bg_lang fg_default
+# bg_l4 fg_default
 style = "bg:#363646 fg:#C5C9C5"
 version_format = "v${minor}"
 # fg_name fg_detail
-format = " [ $symbol (]($style)[$version]($style fg:#C8C093)[|]($style)[$virtualenv]($style fg:#8BA4B0)[)]($style)"
+format = "[ $symbol ]($style)[$version]($style fg:#C8C093)[ $virtualenv ]($style fg:#8BA4B0)"
 
 [time]
 disabled = false
 time_format = "%R" # Hour:Minute Format
-style = "bg:#54546D"
-format = '[[ $time ](bg:#54546D)]($style)'
+# bg_l5 fg_default
+style = "bg:#54546D fg:#C5C9C5"
+format = '[ $time ]($style)'
