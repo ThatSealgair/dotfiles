@@ -1,0 +1,16 @@
+project_root: .
+python_path: ["."]
+analysis:
+  - type: "pep8"
+    enabled: true
+  - type: "cyclomatic_complexity"
+    enabled: true
+  - type: "docstrings"
+    enabled: false
+  - type: "unused_imports"
+    enabled: true
+  - type: "undefined_names"
+    enabled: true
+
+exclusions:
+  - "tests/"

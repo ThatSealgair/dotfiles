@@ -1,0 +1,14 @@
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      run: black --check .
+    lint:
+      run: flake8 .
+    type-check:
+      run: mypy .
+pre-push:
+  parallel: false
+  commands:
+    tests:
+      run: pytest
