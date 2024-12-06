@@ -113,7 +113,7 @@ symbol = "🦀"
 style = "bg:#363646 fg:#C5C9C5"
 version_format = "v${minor}"
 # fg_name fg_detail
-format = "[ $symbol ]($style)[$version]($style fg:#C8C093)[ | ]($style)[$toolchain]($style fg:#8BA4B0)"
+format = "[ $symbol ]($style)[$version]($style fg:#C8C093)[ $toolchain ]($style fg:#8BA4B0)"
 
 [python]
 symbol = "🐍"
