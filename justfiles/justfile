@@ -1,0 +1,144 @@
+# justfile
+
+# Set shell detection
+shell := "nu"
+
+# Set the Python virtual environment path
+venv := ".venv"
+
+# List all available commands with descriptions
+@default:
+    just --list
+
+# Display detailed help information
+@help:
+    #!/usr/bin/env {{shell}}
+    echo "This justfile exists to install all my development tools\n\n"
+    echo "Shell Information:"
+    echo "  Current shell: {{shell}}"
+    echo "  just shell-info       Show current shell configuration\n"
+    echo "Python"
+    echo "  - hackathon:          Hackathon projects"
+    echo "  - cyber-security:     Security research, CTFs, tools (requires subcategory)"
+    echo "  just setup            Install dependencies and setup environment"
+    echo "  just update           Update dependencies"
+    echo "  just check-deps       Check dependency status"
+    echo "  just check-black      Check Python formatting with Black"
+    echo "  just fix-black        Fix Python formatting with Black"
+    echo "  just check-flake8     Run Flake8 linter"
+    echo "  just check-pylyzer    Run Pylyzer static analyzer\n"
+    echo "For more information:   just help-<command>"
+
+# Show shell information
+[private]
+shell-info:
+    #!/usr/bin/env {{shell}}
+    echo "Current shell: {{shell}}"
+    echo "Source command: {{source_cmd}}"
+
+# Setup development environment for Python
+setup-python-dev:
+    # #!/usr/bin/env {{shell}}
+    echo "Setting up development environment..."
+    
+    # Check for uv
+    # TODO: Update this to behave different if bash or nu
+    #if ! command -v uv >/dev/null 2>&1; then
+    #    echo "Installing uv..."
+    #    curl -LsSf https://astral.sh/uv/install.sh | sh
+    #fi
+
+    uv tool install black
+    uv tool install ruff
+    uv tool install pylyzer
+    uv tool install flake8
+    uv tool install mypy
+    uv tool install debugpy
+    uv tool install lefthook
+    
+    echo "Python setup complete!"
+
+# Set shell-specific commands
+source_cmd := if shell == "nu" {
+    "overlay use"
+} else {
+    "source"
+}
+
+# Virtual environment activation command
+activate_cmd := if shell == "nu" {
+    source_cmd + " " + venv + "/bin/activate.nu"
+} else {
+    source_cmd + " " + venv + "/bin/activate"
+}
+
+# Run Black formatter check
+check-black:
+    #!/usr/bin/env {{shell}}
+    echo "Checking Python formatting with Black..."
+    python -m black --check .
+    echo "Black check complete!"
+
+# Fix with Black formatter
+fix-black:
+    #!/usr/bin/env {{shell}}
+    echo "Fixing Python formatting with Black..."
+    python -m black .
+    echo "Black formatting complete!"
+
+# Run Flake8 linter
+check-flake8:
+    #!/usr/bin/env {{shell}}
+    echo "Running Flake8 linter..."
+    python -m flake8 .
+    echo "Flake8 check complete!"
+
+# Run Pylyzer static analyzer
+check-pylyzer:
+    #!/usr/bin/env {{shell}}
+    echo "Running Pylyzer static analysis..."
+    python -m pylyzer .
+    echo "Pylyzer check complete!"
+
+# Lint Python files
+lint-python: check-black check-flake8 check-pylyzer
+    #!/usr/bin/env {{shell}}
+    echo "Running Ruff checks..."
+    python -m ruff check .
+    python -m ruff format --check .
+    echo "All Python linting complete!"
+
+# Fix Python formatting
+fix-python: fix-black
+    #!/usr/bin/env {{shell}}
+    echo "Running Ruff fixes..."
+    python -m ruff check --fix .
+    python -m ruff format .
+    echo "All Python formatting complete!"
+
+# Type check Python files
+typecheck:
+    #!/usr/bin/env {{shell}}
+    echo "Type checking Python files..."
+    python -m mypy --strict --show-error-codes .
+    echo "Type checking complete!"
+
+# Lint markdown files
+lint-md:
+    #!/usr/bin/env {{shell}}
+    echo "Linting Markdown files..."
+    python -m mdformat --check .
+    echo "Markdown linting complete!"
+
+# Fix markdown issues
+fix-md:
+    #!/usr/bin/env {{shell}}
+    echo "Fixing Markdown files..."
+    python -m mdformat .
+    echo "Markdown fixing complete!"
+
+# Validate project structure
+validate-python:
+    #!/usr/bin/env {{shell}}
+    echo "Validating development tools..."
+    echo "Validation completed"
