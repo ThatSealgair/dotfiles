@@ -1,0 +1,150 @@
+// === Shell ===
+default_shell "nu" // "zsh", "bash"
+
+// === Appearance & UI ===
+default_layout "compact"
+theme "kanagawa"
+pane_frames false
+simplified_ui true
+
+// === Session Behaviour ===
+on_force_close "quit" // "detach"
+mouse_mode true
+copy_on_select true
+scroll_buffer_size 100_000
+scroll_field_cells 100
+mirror_session false // Allows sharing sessions between users
+
+// === Terminal Features ===
+terminal_features {
+    graphics true
+    sixel true
+    mouse_reporting true
+    csi_u_key_encoding true
+}
+
+// === Plugins ===
+plugins {
+    tab-bar { path "tab-bar"; }
+    status-bar { path "status-bar"; }
+    strider { path "strider"; } // Fuzzy finder
+    compact-bar { path "compact-bar"; }
+    session-manager {
+        path "session-manager"
+        store_path "~/.zellij_sessions"
+    }
+}
+
+
+// === Keybindings ===
+keybinds clear-defaults=true {
+    normal {
+        bind "Ctrl b" { SwitchToMode "tmux"; }
+    }
+
+    renametab {
+        bind "Ctrl c" { SwitchToMode "normal"; }
+        bind "Enter" { SwitchToMode "normal"; }
+        bind "Esc" { UndoRenameTab; SwitchToMode "tmux"; }
+    }
+
+    scroll {
+        bind "/" { EditScrollback; SwitchToMode "Normal"; }
+        bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
+        bind "Ctrl c" { ScrollToBottom; SwitchToMode "normal"; }
+        bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
+        bind "d" { HalfPageScrollDown; }
+        bind "e" { EditScrollback; SwitchToMode "normal"; }
+        bind "j" { ScrollDown; }
+        bind "k" { ScrollUp; }
+        bind "q" { SwitchToMode "normal"; }
+        bind "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
+        bind "u" { HalfPageScrollUp; }
+    }
+
+    tmux {
+        // Session management
+        bind "(" { PreviousSwapLayout; }
+        bind ")" { NextSwapLayout; }
+        bind "d" { Detach; }
+        bind "s" { SwitchToMode "session"; }
+        
+        // Window/Tab management
+        bind "c" { NewTab; SwitchToMode "normal"; }
+        bind "," { SwitchToMode "RenameTab"; TabNameInput 0; }
+        bind "w" { ToggleFloatingPanes; }
+        bind "n" { GoToNextTab; }
+        bind "p" { GoToPreviousTab; }
+        bind "0" { GoToTab 1; }
+        bind "1" { GoToTab 1; }
+        bind "2" { GoToTab 2; }
+        bind "3" { GoToTab 3; }
+        bind "4" { GoToTab 4; }
+        bind "5" { GoToTab 5; }
+        bind "6" { GoToTab 6; }
+        bind "7" { GoToTab 7; }
+        bind "8" { GoToTab 8; }
+        bind "9" { GoToTab 9; }
+        
+        // Pane management
+        bind "%" { NewPane "Right"; SwitchToMode "normal"; }
+        bind "\"" { NewPane "Down"; SwitchToMode "normal"; }
+        bind "-" { NewPane "Down"; SwitchToMode "normal"; }
+        bind "|" { NewPane "Right"; SwitchToMode "normal"; }
+        bind "z" { ToggleFocusFullscreen; SwitchToMode "normal"; }
+        bind "o" { FocusNextPane; }
+        bind ";" { FocusPreviousPane; }
+        bind "x" { CloseFocus; SwitchToMode "normal"; }
+        
+        // Movement
+        bind "h" { MoveFocus "Left"; }
+        bind "j" { MoveFocus "Down"; }
+        bind "k" { MoveFocus "Up"; }
+        bind "l" { MoveFocus "Right"; }
+        bind "Left" { MoveFocus "Left"; }
+        bind "Down" { MoveFocus "Down"; }
+        bind "Up" { MoveFocus "Up"; }
+        bind "Right" { MoveFocus "Right"; }
+        
+        // Resize
+        bind "H" { Resize "Left"; }
+        bind "J" { Resize "Down"; }
+        bind "K" { Resize "Up"; }
+        bind "L" { Resize "Right"; }
+        
+        // Layout
+        bind "Space" { NextSwapLayout; }
+        
+        // Copy mode and scrollback
+        bind "[" { SwitchToMode "scroll"; }
+        bind "/" { EditScrollback; SwitchToMode "Normal"; }
+        
+        // Mode switching
+        bind "Ctrl b" { SwitchToMode "normal"; }
+        bind "Enter" { SwitchToMode "normal"; }
+        
+        // Additional tmux compatibility
+        bind "t" { SwitchToMode "RenameTab"; TabNameInput 0; }
+        bind "!" { TogglePaneFrames; }
+    }
+
+    shared_except "normal" {
+        bind "Esc" { SwitchToMode "normal"; }
+    }
+}
+
+themes {
+    kanagawa {
+        fg "#C8C093"
+        bg "#181616"
+        red "#C4746E"
+        green "#8A9A7B"
+        yellow "#C4B28A"
+        blue "#8BA4B0"
+        magenta "#E46876"
+        orange "#FFA066"
+        cyan "#8EA4A2"
+        black "#0D0C0C"
+        white "#C8C093"
+    }
+}
