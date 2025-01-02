@@ -1,12 +1,61 @@
+[language-server.astro-ls]
+command = "astro-ls"
+args = ["--stdio"]
+config = {typescript = {tsdk = "~/.bun/install/global/node_modules/typescript/lib"}, environment = "node"}
+
+[[language]]
+name = "astro"
+auto-format = true
+language-servers = [ "astro-ls" ]
+
 [[language]]
 name = "c"
 language-servers = [ "clangd" ]
 
-
 [[language]]
 name = "go"
+roots = ["go.mod"]
 auto-format = true
-formatter = { command = "goimports" }
+comment-token = "//"
+language-servers = [ "golangci-lint-lsp", "gopls" ]
+
+[language-server.golangci-lint-lsp]
+command = "golangci-lint-langserver"
+
+[language-server.golangci-lint-lsp.config]
+command = [
+  "golangci-lint",
+  "run",
+  "-D",
+  "varcheck",
+  "scopelint",
+  "nosnakecase",
+  "maligned",
+  "-E",
+  "revive",
+  "forbidigo",
+  "bidichk",
+  "dupl",
+  "errcheck",
+  "exhaustive",
+  "exhaustruct",
+  "gocritic",
+  "goimports",
+  "gosec",
+  "govet",
+  "perfsprint",
+  "prealloc",
+  "staticcheck",
+  "unparam",
+  "unused",
+  "--out-format",
+  "json",
+  "--issues-exit-code=1",
+]
+
+[language-server.gopls]
+command = "gopls"
+config = { "gofumpt" = true, "local" = "goimports", "semanticTokens" = true, "staticcheck" = true, "verboseOutput" = true, "analyses" = { "fieldalignment" = true, "nilness" = true, unusedparams = true, unusedwrite = true, useany = true }, usePlaceholders = true, completeUnimported = true, hints = { "assignVariableType" = true, "compositeLiteralFields" = true, "compositeLiteralTypes" = true, "constantValues" = true, "functionTypeParameters" = true, "parameterNames" = true, "rangeVariableTypes" = true } }
 
 
 [[language]]
@@ -25,23 +74,35 @@ request = "launch"
 completion = [ { name = "script", completion = "filename" } ]
 args = { program = "{0}" }
 
+[[language]]
+name = "markdown"
+file-types = ["markdown", "md", "mdx"]
+language-servers = ["marksman", "markdown-oxide", "typos"]
+formatter = { command = "dprint", args = ["fmt", "--stdin", "md"]}
 
 [[language]]
 name = "python"
-language-servers = [ "pylyzer" ]
+language-servers = [ "pylyzer", "basedpyright", "typos"]
 scope = "source.python"
-formatter = { command = "ruff", args = ["--quiet", "-"] }
+formatter = { command = "black", args = ["-", "--quiet", "--line-length=120"] }
 auto-format = true
 roots = [ "pyproject.toml", "setup.py", "requirements.txt", "Poetry.lock"]
 
 [language-server.pylyzer]
 command = "pylyzer"
-config = { settings = { args = [ "--server" ] } }
+config = { args = [ "--server", "--hurry", "--do-not-show-exit-errors" ] } 
+
+[language-server.basedpyright]
+command = "basedpyright-langserver"
+args = ["--stdio"]
+
+[language-server.basedpyright.config]
+basedpyright.analysis.diagnosticMode = "openFilesOnly"
 
 [language.debugger]
 name = "debugpy"
 transport = "stdio"
-command = "python3"
+command = "python"
 args = ["-m",  "debugpy.adapter"]
 
 [[language.debugger.templates]]
@@ -53,6 +114,7 @@ args = { mode = "debug", program = "{0}" }
 
 [[language]]
 name = "rust"
+language-servers = ["rust-analyzer", "typos"]
 scope = "source.rust"
 roots = ["Cargo.toml", "Cargo.lock"]
 
@@ -78,6 +140,40 @@ args = { program = "{0}", runInTerminal = true }
 
 
 [[language]]
+name = "toml"
+formatter = { command = "taplo", args = ["fmt", "-"] }
+
+[language-server]
+biome = { command = "biome", args = ["lsp-proxy"] }
+
+[[language]]
+name = "javascript"
+language-servers = [ { name = "typescript-language-server", except-features = [ "format" ] }, "biome" ]
+formatter = { command = "dprint", args = [ "fmt", "--stdin", "javascript" ] }
+
+[[language]]
+name = "typescript"
+language-servers = [ { name = "typescript-language-server", except-features = [ "format" ] }, "biome" ]
+formatter = { command = "dprint", args = [ "fmt", "--stdin", "typescript" ] }
+
+[[language]]
+name = "tsx"
+language-servers = [ { name = "typescript-language-server", except-features = [ "format" ] }, "biome" ]
+formatter = { command = "dprint", args = [ "fmt", "--stdin", "tsx" ] }
+
+[[language]]
+name = "jsx"
+auto-format = true
+language-servers = [ { name = "typescript-language-server", except-features = [ "format" ] }, "biome" ]
+formatter = { command = "dprint", args = [ "fmt", "--stdin", "jsx" ] }
+
+[[language]]
+name = "json"
+language-servers = [ { name = "vscode-json-language-server", except-features = [ "format" ] }, "biome" ]
+formatter = { command = "dprint", args = [ "fmt", "--stdin", "json" ] }
+
+
+[[language]]
 name = "zig"
 language-servers = [ "zls" ]
 
@@ -91,3 +187,16 @@ name = "binary"
 request = "launch"
 completion = [ { name = "binary", completion = "filename" } ]
 args = { program = "{workspaceRoot}/zig-out/bin/{fileBasenameNoExtension}" }
+
+[language-server.typos]
+# typos-lsp must be on your PATH, or otherwise change this to an absolute path to typos-lsp
+command = "typos-lsp"
+# Logging level of the language server. Defaults to error.
+# Run with helix -v to output LSP logs to the editor log (:log-open)
+environment = {"RUST_LOG" = "error"}
+# Custom config. Used together with a config file found in the workspace or its parents,
+# taking precedence for settings declared in both. Equivalent to the typos `--config` cli argument.
+config.config = "~/code/typos-lsp/crates/typos-lsp/tests/typos.toml"
+# How typos are rendered in the editor, can be one of an Error, Warning, Info or Hint.
+# Defaults to Warning.
+config.diagnosticSeverity = "Warning"

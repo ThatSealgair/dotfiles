@@ -1,15 +1,24 @@
 theme = "kanagawa"
 
 [editor]
-true-color = true
-shell = ["nu", "-c"]
-text-width = 120
-scrolloff = 3
-line-number = "absolute"
+auto-completion = false
+auto-format = true
 cursorline = true
-rulers = [80, 120]
+line-number = "absolute"
 mouse = true
-completion-trigger-len = 2
+rulers = [80, 120]
+scrolloff = 3
+shell = ["nu", "-c"] # ["sh", "-c"], ["cmd", "/C"]
+text-width = 120
+true-color = true
+
+[editor.auto-pairs]
+'(' = ')'
+'{' = '}'
+'[' = ']'
+'"' = '"'
+'`' = '`'
+'<' = '>'
 
 [editor.cursor-shape]
 insert = "bar"
@@ -27,8 +36,8 @@ display-inlay-hints = true
 display-messages = true
 
 [editor.indent-guides]
-render = true
 character = "╎" 
+render = true
 skip-levels = 1
 
 [editor.statusline]
