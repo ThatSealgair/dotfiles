@@ -78,25 +78,26 @@ $env.NU_PLUGIN_DIRS = [
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 
 # /usr/local/bin/go/bin/
-
-$env.BUN_HOME = $"($env.HOME)/.bun/bin"
-$env.CARGO_HOME = $"($env.HOME)/.cargo"
-$env.GO_HOME = $"/usr/local/bin/go/bin"
-$env.GO_PATH = $"($env.HOME)/go/bin/"
+$env.BUN_INSTALL = $"($env.HOME)/.bun/"
+$env.BUN_HOME = $"($env.HOME)/.bun/bin/"
+$env.CARGO_HOME = $"($env.HOME)/.cargo/"
+$env.GO_HOME = $"($env.HOME)/go/bin/"
 $env.LUA_LSP = $"($env.HOME)/lua-language-server/bin/"
-$env.PNPM_HOME = $"($env.HOME)/.local/share/pnpm"
-$env.RYE_HOME = $"($env.HOME)"
+$env.NIX_HOME = $"/nix/var/nix/profiles/default/bin/nix/"
+$env.PNPM_HOME = $"($env.HOME)/.local/share/pnpm/"
 $env.ZIG_HOME = $"/usr/local/zig/"
 $env.ZLS_HOME = $"/usr/local/zls/"
 
+
+
 $env.PATH = ($env.PATH | split row (char esep)
     | prepend '/home/sealgair/.local/bin'
+    | prepend $env.BUN_INSTALL
     | prepend $env.BUN_HOME
     | prepend $env.GO_HOME
-    | prepend $env.GO_PATH
     | prepend $env.LUA_LSP
+    | prepend $env.NIX_HOME
     | prepend $env.PNPM_HOME
-    | prepend $env.RYE_HOME
     | prepend $env.ZIG_HOME
     | prepend $env.ZLS_HOME
     | uniq) # Filter so the paths are unique
