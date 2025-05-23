@@ -37,7 +37,6 @@
     pkgs.bat
     pkgs.cargo
     pkgs.delta
-    pkgs.ghostty
     pkgs.gnupg
     pkgs.helix
     pkgs.just
@@ -139,6 +138,8 @@
         IdentityFile ~/.ssh/id_ed25519
         IdentitiesOnly yes
       '';
+
+    ".config/ghostty/config".source = = ./.config/ghostty/config;
 
     ".config/helix/config.toml".source = ./.config/helix/config.toml;
     ".config/helix/languages.toml".source = ./.config/helix/languages.toml;

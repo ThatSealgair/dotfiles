@@ -6,6 +6,7 @@ default_layout "compact"
 theme "kanagawa"
 pane_frames false
 simplified_ui true
+show_startup_tips false
 
 // === Session Behaviour ===
 on_force_close "quit" // "detach"

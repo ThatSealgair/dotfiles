@@ -15,3 +15,9 @@ Using dotter, the config files *should* be placed exactly where they're supposed
 
 ## Other
  - Obsidian
+
+
+# Operation
+```bash
+home-manager -f dotfiles/home.nix switch
+```
