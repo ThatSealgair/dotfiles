@@ -139,17 +139,17 @@
         IdentitiesOnly yes
       '';
 
-    ".config/ghostty/config".source = = ./.config/ghostty/config;
+    ".config/ghostty/config".source = ./config/ghostty/config;
 
-    ".config/helix/config.toml".source = ./.config/helix/config.toml;
-    ".config/helix/languages.toml".source = ./.config/helix/languages.toml;
+    ".config/helix/config.toml".source = ./config/helix/config.toml;
+    ".config/helix/languages.toml".source = ./config/helix/languages.toml;
 
-    ".config/nushell/config.nu".source = ./.config/nushell/config.nu;
-    ".config/nushell/env.nu".source = ./.config/nushell/env.nu;
+    ".config/nushell/config.nu".source = ./config/nushell/config.nu;
+    ".config/nushell/env.nu".source = ./config/nushell/env.nu;
 
-    ".config/starship.toml".source = ./.config/starship.toml;
+    ".config/starship.toml".source = ./config/starship.toml;
 
-    ".config/zellij/config.kdl".source = ./.config/zellij/config.kdl;
+    ".config/zellij/config.kdl".source = ./config/zellij/config.kdl;
   };
 
   # Home Manager can also manage your environment variables through
