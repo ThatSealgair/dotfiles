@@ -126,10 +126,10 @@
     #   org.gradle.daemon.idletimeout=3600000
     # '';
     ".ssh/id_ed25519" = {
-      source = ./secrets/id_ed25519;
+      source = ~/.ssh/id_ed25519;
     };
     ".ssh/id_ed25519.pub" = {
-      source = ./secrets/id_ed25519.pub;
+      source = ~/.ssh/id_ed25519.pub;
     };
     ".ssh/config".text = ''
       Host github.com
